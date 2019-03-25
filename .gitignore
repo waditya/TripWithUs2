@@ -1,0 +1,4 @@
+/node_modules
+dist
+UserAssets
+package-lock.json

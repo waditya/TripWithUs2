@@ -1,0 +1,57 @@
+{
+  "name": "mern_concord",
+  "version": "1.0.0",
+  "description": "This is a social networking project created using MERN stack",
+  "main": "index.js",
+  "scripts": {
+    "development": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://www.github.com/waditya"
+  },
+  "keywords": [
+    "MERN",
+    "Concord",
+    "Followers",
+    "Profile",
+    "Social",
+    "Network"
+  ],
+  "author": "Aditya Wagholikar",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "file-loader": "^1.1.11",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-middleware": "^3.1.3",
+    "webpack-hot-middleware": "^2.22.3",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "formidable": "^1.2.1",
+    "helmet": "^3.13.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.10",
+    "material-ui": "^1.0.0-beta.43",
+    "material-ui-icons": "^1.0.0-beta.36",
+    "mongoose": "^5.2.8",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-hot-loader": "^4.3.4",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
+  }
+}
