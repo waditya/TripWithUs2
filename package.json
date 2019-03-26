@@ -10,6 +10,10 @@
     "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js",
     "start": "SET NODE_ENV=production node ./dist/server.generated.js"
   },
+  "engines": {
+    "node": "10.13.0",
+    "npm": "6.7.0"
+  },
   "repository": {
     "type": "git",
     "url": "http://www.github.com/waditya/tripwithus2"
