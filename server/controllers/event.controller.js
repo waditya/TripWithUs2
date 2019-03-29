@@ -1,3 +1,4 @@
+import Post from '../models/post.model'
 import Event from '../models/event.model'
 import _ from 'lodash'
 import errorHandler from './../helpers/dbErrorHandler'
@@ -14,12 +15,12 @@ const create = (req, res, next) => {
       })
     }
     let event = new Event(fields)
-    post.postedBy= req.profile
+    event.postedBy= req.profile
     if(files.photo){
-      post.photo.data = fs.readFileSync(files.photo.path)
-      post.photo.contentType = files.photo.type
+      event.photo.data = fs.readFileSync(files.photo.path)
+      event.photo.contentType = files.photo.type
     }
-    post.save((err, result) => {
+    event.save((err, result) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler.getErrorMessage(err)
@@ -30,70 +31,81 @@ const create = (req, res, next) => {
   })
 }
 
-const postByID = (req, res, next, id) => {
-  Post.findById(id).populate('postedBy', '_id name').exec((err, post) => {
-    if (err || !post)
-      return res.status('400').json({
-        error: "Post not found"
-      })
-    req.post = post
-    next()
-  })
-}
-
-const listByUser = (req, res) => {
-  Post.find({postedBy: req.profile._id})
-  .populate('comments', 'text created')
-  .populate('comments.postedBy', '_id name')
-  .populate('postedBy', '_id name')
-  .sort('-created')
-  .exec((err, posts) => {
+const list = (req, res) => {
+  Event.find((err, events) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler.getErrorMessage(err)
       })
     }
-    res.json(posts)
+    res.json(events)
+  }).select('eventID eventName eventDescription location')
+}
+
+const eventByID = (req, res, next, id) => {
+  Event.findById(id).populate('postedBy', '_id name').exec((err, event) => {
+    if (err || !event)
+      return res.status('400').json({
+        error: "Event not found"
+      })
+    req.event = event
+    next()
+  })
+}
+
+const listByUser = (req, res) => {
+  Event.find({postedBy: req.profile._id})
+  .populate('comments', 'text created')
+  .populate('comments.postedBy', '_id name')
+  .populate('postedBy', '_id name')
+  .sort('-created')
+  .exec((err, events) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    res.json(events)
   })
 }
 
 const listNewsFeed = (req, res) => {
   let following = req.profile.following
   following.push(req.profile._id)
-  Post.find({postedBy: { $in : req.profile.following } })
+  Event.find({postedBy: { $in : req.profile.following } })
   .populate('comments', 'text created')
   .populate('comments.postedBy', '_id name')
   .populate('postedBy', '_id name')
   .sort('-created')
-  .exec((err, posts) => {
+  .exec((err, events) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler.getErrorMessage(err)
       })
     }
-    res.json(posts)
+    res.json(events)
   })
 }
 
 const remove = (req, res) => {
-  let post = req.post
-    post.remove((err, deletedPost) => {
+  let event = req.event
+    event.remove((err, deletedEvent) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler.getErrorMessage(err)
         })
       }
-      res.json(deletedPost)
+      res.json(deletedEvent)
     })
 }
 
 const photo = (req, res, next) => {
-    res.set("Content-Type", req.post.photo.contentType)
-    return res.send(req.post.photo.data)
+    res.set("Content-Type", req.event.photo.contentType)
+    return res.send(req.event.photo.data)
 }
 
 const like = (req, res) => {
-  Post.findByIdAndUpdate(req.body.postId, {$push: {likes: req.body.userId}}, {new: true})
+  Event.findByIdAndUpdate(req.body.eventId, {$push: {likes: req.body.userId}}, {new: true})
   .exec((err, result) => {
     if (err) {
       return res.status(400).json({
@@ -105,7 +117,7 @@ const like = (req, res) => {
 }
 
 const unlike = (req, res) => {
-  Post.findByIdAndUpdate(req.body.postId, {$pull: {likes: req.body.userId}}, {new: true})
+  Event.findByIdAndUpdate(req.body.eventId, {$pull: {likes: req.body.userId}}, {new: true})
   .exec((err, result) => {
     if (err) {
       return res.status(400).json({
@@ -120,7 +132,7 @@ const unlike = (req, res) => {
 const comment = (req, res) => {
   let comment = req.body.comment
   comment.postedBy = req.body.userId
-  Post.findByIdAndUpdate(req.body.postId, {$push: {comments: comment}}, {new: true})
+  Event.findByIdAndUpdate(req.body.eventId, {$push: {comments: comment}}, {new: true})
   .populate('comments.postedBy', '_id name')
   .populate('postedBy', '_id name')
   .exec((err, result) => {
@@ -132,9 +144,10 @@ const comment = (req, res) => {
     res.json(result)
   })
 }
+
 const uncomment = (req, res) => {
   let comment = req.body.comment
-  Post.findByIdAndUpdate(req.body.postId, {$pull: {comments: {_id: comment._id}}}, {new: true})
+  Event.findByIdAndUpdate(req.body.postId, {$pull: {comments: {_id: comment._id}}}, {new: true})
   .populate('comments.postedBy', '_id name')
   .populate('postedBy', '_id name')
   .exec((err, result) => {
@@ -148,7 +161,7 @@ const uncomment = (req, res) => {
 }
 
 const isPoster = (req, res, next) => {
-  let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id
+  let isPoster = req.event && req.auth && req.event.postedBy._id == req.auth._id
   if(!isPoster){
     return res.status('403').json({
       error: "User is not authorized"
@@ -160,8 +173,9 @@ const isPoster = (req, res, next) => {
 export default {
   listByUser,
   listNewsFeed,
+  eventByID,
   create,
-  postByID,
+  list,
   remove,
   photo,
   like,

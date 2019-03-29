@@ -144,6 +144,8 @@ const removeFollowing = (req, res, next) => {
     next()
   })
 }
+
+
 const removeFollower = (req, res) => {
   User.findByIdAndUpdate(req.body.unfollowId, {$pull: {followers: req.body.userId}}, {new: true})
   .populate('following', '_id name')
