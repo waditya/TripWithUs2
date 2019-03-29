@@ -3,12 +3,12 @@ import crypto from 'crypto'
 
 const EventSchema = new mongoose.Schema({
   eventID: {
-    type: Number,
-    required: 'Please add a number'
+    type: String,
+    required: "Please add a number"
   },
    eventName: {
-     text: String,
-     required:'Event Name is required'
+     type: String,
+     required:"Event Name is required"
    }
   ,eventDescription: {
     type: String,
