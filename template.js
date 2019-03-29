@@ -3,7 +3,7 @@ export default ({markup, css}) => {
       <html lang="en">
         <head>
           <meta charset="utf-8">
-          <title>CONCORD - Your Social Network!</title>
+          <title>TripWithUs - Your Social Network!</title>
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
           <style>
