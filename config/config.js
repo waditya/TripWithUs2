@@ -11,15 +11,17 @@
 
 export default config */
 
+
+let db = {
+  localhost: 'mongodb://localhost:27017/tripwithus2',
+  mlab: "mongodb://aditya:January1234@ds141815.mlab.com:41815/tripwithus2"
+}
+
 const config = {
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
   jwtSecret: process.env.JWT_SECRET || "YOUR_secret_key",
-  mongoUri: process.env.MONGODB_URI ||
-    process.env.MONGO_HOST ||
-    'mongodb://' + ('aditya:January1234@ds149404.mlab.com' || 'localhost') + ':' +
-    ('41815' || '27017') +
-    '/tripwithus2'
+  mongoUri: db.localhost || db.mlab
 }
 
 export default config
