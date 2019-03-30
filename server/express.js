@@ -24,7 +24,7 @@ import {teal, orange} from 'material-ui/colors'
 //end
 
 //comment out before building for production
-// import devBundle from './devBundle'  // Commented for Production mode
+//import devBundle from './devBundle'  // Commented for Production mode
 
 const CURRENT_WORKING_DIR = process.cwd()
 const app = express()

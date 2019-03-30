@@ -14,7 +14,7 @@ export default config */
 
 let db = {
   localhost: 'mongodb://localhost:27017/tripwithus2',
-  mlab: "mongodb://aditya:January1234@ds141815.mlab.com:41815/tripwithus2"
+  mlab: 'mongodb://aditya:March1234@ds141815.mlab.com:41815/tripwithus2'
 }
 
 const config = {
