@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUri)
 mongoose.connection.on('error', () => {
+  console.log(config.mongoUri); // Try now
   throw new Error(`unable to connect to database: ${mongoUri}`)
 })
 
